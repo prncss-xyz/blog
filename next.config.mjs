@@ -1,4 +1,14 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+import { remarkCodeHike } from "@code-hike/mdx";
+import remarkMdxImages from "remark-mdx-images";
+import createMDX from "@next/mdx";
 
-export default nextConfig;
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [remarkMdxImages, [remarkCodeHike, {}]],
+  },
+});
+
+export default withMDX({
+  pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
+});

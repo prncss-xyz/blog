@@ -1,0 +1,526 @@
+import { Slide } from "@/components/slide";
+import { Sample01 } from "./samples/sample01";
+import { Sample03 } from "./samples/sample03";
+import { Sample04 } from "./samples/sample04";
+import { Sample05 } from "./samples/sample05";
+import { Sample06 } from "./samples/sample06";
+import { Sample07 } from "./samples/sample07";
+
+<Slide>
+
+# Functional Optics for State Management and Beyond
+
+## Who I am
+
+- Juliette; she/her
+- graduated in both mathematics and linguistics
+- poetry
+- volunteer at a trans organization for financial litteracy, helping the team to organize their collaborative tools
+- main languages: lua, go, typescript
+- sometimes: haskell, c, c++
+- last position: full stack web developper for a research group at l'UQAM
+- currently work at:
+
+</Slide>
+
+<Slide>![Hire Me!](./hire-me.jpg)</Slide>
+
+<Slide>
+
+## The problem
+
+<CH.Code>
+```jsx
+// from ./samples/sample00.jsx
+```
+</CH.Code>
+
+- dot dot dot hell
+- implicit coupling
+- lack of intentionality
+
+</Slide>
+
+<Slide>
+
+## A First Lens
+
+<CH.Code>
+```jsx
+// from ./samples/sample01.jsx
+```
+</CH.Code>
+
+<Sample01 />
+
+- abstracts the concern of updating part of the structure
+- curried function
+- useState takes a callback
+- explicit coupling
+- the focus
+- product type
+
+</Slide>
+
+<Slide>
+
+## Axioms of a Lens
+
+<CH.Code>
+```jsx
+function prop(key) {
+  return {
+    get: (whole) => whole[key],
+    set: (part) => (whole) => ({ ...whole, [key]: part }),
+  };
+}
+```
+</CH.Code>
+
+- **get after set**: `l.get(l.set(a)(s)) === a`
+- **get after set**: `l.set(l.get(s))(s) === s`
+- **set after set**: `l.set(b)(l.set(a)(s)) === l.set(b)(s)`
+
+  - **idempotency**: `l.set(a)(l.set(a)(s)) === l.set(a)(s)`
+
+- great to write tests (property-based testing)
+
+</Slide>
+
+<Slide>
+
+## Nested State
+
+<CH.Code>
+```jsx
+// from ./samples/sample02.jsx
+```
+</CH.Code>
+
+</Slide>
+
+<Slide>
+
+## Composition
+
+<CH.Code>
+```jsx
+// from ./samples/sample03.jsx
+````
+</CH.Code>
+
+<Sample03 />
+
+- If all composees respect lens laws, then so does the composed.
+- lens &middot; lens = lens
+
+</Slide>
+
+<Slide>
+
+## Assoc
+
+<CH.Code>
+```jsx
+// from ./samples/sample04.jsx
+```
+
+</CH.Code>
+
+<Sample04 />
+
+- assoc and set can be derived from one another (will not true for all optics)
+- polymorphic lenses
+
+</Slide>
+
+<Slide>
+
+## Element lens
+
+<CH.Code>
+```jsx
+// from ./samples/sample05.jsx
+```
+</CH.Code>
+
+<Sample05 />
+
+- API wants a `string[]`
+- component wants a `boolean`
+- parts do not need to reflect the constructor
+- is it a lens? (equivalence vs equality)
+  - **set after set**: `l.set(b)(l.set(a)(s)) === l.set(b)(s)`
+
+</Slide>
+
+<Slide>
+
+## Iso (isomorphism)
+
+<CH.Code>
+```jsx
+// from ./samples/sample06.jsx
+  ```
+</CH.Code>
+
+<Sample06 />
+
+- getter method independent of second parameter
+- "part" has as much information as "whole"
+- application state in International System of Units (IS), API and GUI can be in any unit system
+  - Mars Climate Oberver
+  - On September 23, 1999, communication with the spacecraft was permanently lost as it went into orbital insertion.
+- composition:
+  - lens &middot; iso = lens
+  - iso &middot; lens = lens
+  - iso &middot; iso = iso
+
+</Slide>
+
+<Slide>
+
+## Parts
+
+<CH.Code>
+```jsx
+function parts(separator) {
+  return lens(
+    (whole) => whole.split(separator),
+    (part) => (_whole) => part.join(separator)
+  );
+}
+
+const words = parts(" ");
+const elems = parts("+");
+
+````
+</CH.Code>
+
+</Slide>
+
+<Slide>
+
+## Bool to int
+
+<CH.Code>
+```jsx
+function boolToInt() {
+  return lens(
+    (whole) => (whole ? 1 : 0),
+    (part) => (_whole) => part === 1
+  );
+}
+````
+
+- serialization, deserializtion (date)
+
+</CH.Code>
+
+</Slide>
+
+<Slide>
+
+## Prism
+
+<CH.Code>
+```jsx
+// from ./samples/sample07.jsx
+  ```
+</CH.Code>
+
+- failure on read
+  - undefined, expection, tagged union
+- partial function
+- assoc might not fail, if you think of it as some sort of `map`
+- writing always succeed
+- sum type
+- getter method independent of second parameter
+- "part" has as much information as "whole"
+- iso is both a lens and a prism
+- composition:
+  - prism &middot; prism = prism
+  - prism &middot; iso = prism
+  - iso &middot; prism = prism
+
+<Sample07 />
+
+</Slide>
+
+<Slide>
+
+## Predicates
+
+<CH.Code>
+```jsx
+// predicate
+const isPositive = prism(
+  (whole) => (whole >= 0 ? whole : undefined),
+  (_whole, part) => part
+);
+
+// type guard
+const isNumber = prism(
+  (whole) => (typeof whole === "number" ? whole : undefined),
+  (\_whole, part) => part
+);
+
+// validator
+struct({
+  x: strToNum,
+  y: isPositive,
+  z: isNumber,
+})
+
+````
+</CH.Code>
+
+- predicate vs filter
+- type guard
+- pattern matching
+- validator
+
+</Slide>
+
+<Slide>
+
+## Optional (Affine Fold)
+
+<CH.Code>
+```jsx
+// from ./samples/sample08.jsx
+````
+
+</CH.Code>
+
+- read can fail
+- write can fail
+  - exception, undefined, tagged union
+  - return same value
+  - derived form read error (no optics that can only fail on write)
+- combinations
+- lens &middot; prism = optional
+- prism &middot; lens = optional
+- optional &middot; optional = optional
+- optional &middot; iso = optional
+
+</Slide>
+
+<Slide>
+
+### Other optics
+
+![class diagram](./class-diagram.png)
+
+- getters:
+  - number of cats
+- affine fold
+  - longest cat's name
+- setters:
+  - assoc as a setter
+  - multiple updates
+    - close a popup, set the main item
+  - do they compose?
+- equivalence
+  - convenience (type inference)
+  - custom deep equality check
+  - lens with identity relation
+
+#### Multiple focus
+
+- fold
+  - two longuest cat's names
+- transversals
+
+  - name of all the cats starting with an 'm'
+  - `assoc` cannot de derived from `set`
+    - set names to "matou"
+    - appends "minou" to names
+
+- composition
+
+<CH.Code>
+
+```tsx
+const init = {
+  cats = [
+    { id: 32, name: "maramalade" },
+    { id: 18, name: "profunctor" },
+    { id: 343, name: "minou" },
+  ],
+};
+```
+
+</CH.Code>
+
+<CH.Code>
+  ```tsx 
+const init = {
+  cats = [
+    { id: 32, name: "matou" },
+    { id: 18, name: "profunctor" },
+    { id: 343, name: "matou" },
+  ]
+};
+  ```
+</CH.Code>
+
+<CH.Code>
+```tsx
+const init = {
+  cats = [
+    {id: 32, name: "maramalademinou"},
+    {id: 18, name: "profunctor"},
+    {id: 343, name: "minouminou"}
+  ]
+};
+```
+
+</CH.Code>
+
+</Slide>
+<Slide>
+
+## Implementations
+
+### Lens as pattern
+
+- 10 LOC
+- separation of concern
+- handling convertions between structures
+
+### Older stuff
+
+- pre typescript era
+
+  - runtime is easier to implement than typing
+  - difficult to retrofit type good inference
+
+- [ramda](https://ramdajs.com/) (lens only)
+
+#### Inspiration
+
+- [grammarly/focal: Program user interfaces the FRP way.](https://github.com/grammarly/focal)
+  - tied to react and rx (not as useful since hooks)
+- [calmm-js/partial.lenses](https://github.com/calmm-js/partial.lenses#use-of-undefined) old (pre-ts), but lots of stuff
+- [cyclejs](https://cycle.js.org/)
+
+### Modern libraries
+
+- [optics-ts](https://akheron.github.io/optics-ts/reference-mc/)
+  - heavy on compiler
+  - some bugs in type inference (false positives, no false negatives, infinite cycles)
+- [gcanti/monocle-ts: Functional optics: a (partial) porting of Scala monocle](https://github.com/gcanti/monocle-ts)
+  - stable/unmaitained
+- [fp-ts/optic: A porting of zio-optics to TypeScript](https://github.com/fp-ts/optic)
+  - same author as monocle
+  - no folds/transversals
+- [io-ts](https://gcanti.github.io/io-ts/)
+  - same author as monocle
+  - prism library
+  - somewhat an alternative to zod
+
+</Slide>
+
+<Slide>
+
+### React Integrations
+
+- fits with react model (immutability)
+- plain hooks
+- jotai
+  - [jotaijs/jotai-optics: Jotai integration library for optics-ts](https://github.com/jotaijs/jotai-optics)
+
+</Slide>
+<Slide>
+
+#### Zustand
+
+- Docs refers to ramda and optics-ts as fancy setters
+- [Practice with no store actions](https://docs.pmnd.rs/zustand/guides/practice-with-no-store-actions)
+
+<CH.Code>
+```jsx
+// from ../../../components/stores.ts
+````
+</CH.Code>
+
+</Slide>
+
+<Slide>
+
+#### Zustand
+
+<CH.Code>
+```jsx
+import { optic } from "optics-ts";
+import { createHooks } from "./stores";
+import { create } from "zustand";
+
+export interface ISlide {
+  ref: React.RefObject<HTMLDivElement>;
+}
+
+export interface IState {
+  slide: number;
+  slides: ISlide[];
+}
+
+export const state = optic<IState>();
+
+export const initSamples = {};
+
+export const init: IState = {
+  slide: 0,
+  slides: [],
+};
+
+const useBoundStore = create(() => init);
+export const useMainStore = createHooks(useBoundStore);
+````
+
+</CH.Code>
+
+</Slide>
+
+<Slide>
+
+## What are the alternatives (front-end)
+
+### Proxy solutions
+
+- tools are easier to understand
+- workflow is implicit
+- for simple use cases both ways seem comparable
+- only equivalent to simple cases
+
+- standalone: immer
+- state management: valtio
+- framework: solidjs
+
+## What are the complements
+
+- spatial vs temporal (observable, finite state machine)
+
+- Konami Code
+
+![Konami Code](./Konami_Code.svg)
+
+- async reactivity: rxjs
+- state machine: xstate
+
+</Slide>
+
+<Slide>
+
+## Concluding remarks
+
+- polymorphism
+- testability
+- try, tested theorized
+- shared accross languages and frameworks
+
+</Slide>
+
+- injectivity (prism, iso)
+- sirens
