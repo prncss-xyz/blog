@@ -1,6 +1,7 @@
-"use client"
-import { useCallback, useState } from "react";
-import { Sample } from "@/components/sample";
+"use client";
+import { useCallback } from "react";
+import { demo } from "@/components/demo";
+const { Demo, useDemo } = demo();
 
 function prop(key) {
   return {
@@ -25,25 +26,22 @@ const init = {
 };
 
 function Component({ target }) {
-  const [state, setState] = useState(init);
+  const [state, setState] = useDemo();
   const clickHandler = useCallback(
     () => setState(lollyProp.set(target)),
-    [target]
+    [setState, target]
   );
   return (
-    <>
-      <div>{JSON.stringify(state)}</div>
-      <button disabled={lollyProp.get(state) === target} onClick={clickHandler}>
-        {target}
-      </button>
-    </>
+    <button disabled={lollyProp.get(state) === target} onClick={clickHandler}>
+      {target}
+    </button>
   );
 }
 
 export function Sample03() {
   return (
-    <Sample>
+    <Demo init={init}>
       <Component target={5} />
-    </Sample>
+    </Demo>
   );
 }

@@ -1,6 +1,7 @@
-"use client"
+"use client";
 import { useCallback, useMemo, useState } from "react";
-import { Sample } from "@/components/sample";
+import { demo } from "@/components/demo";
+const { Demo, useDemo } = demo();
 
 function lens(get, set) {
   return {
@@ -38,13 +39,12 @@ const init = { tags: ["emerald", "flaming", "spring"] };
 
 function TagToggler({ tag }) {
   const tagLens = useMemo(() => compose(tagsProp, element(tag)), [tag]);
-  const [state, setState] = useState(init);
+  const [state, setState] = useDemo();
   const clickHandler = useCallback(() => {
     return setState(tagLens.assoc(negate));
-  }, [tagLens]);
+  }, [setState, tagLens]);
   return (
     <>
-      <div>{JSON.stringify(state)}</div>
       <div
         style={{
           display: "flex",
@@ -65,8 +65,8 @@ function TagToggler({ tag }) {
 
 export function Sample05() {
   return (
-    <Sample>
+    <Demo init={init}>
       <TagToggler tag="flaming" />
-    </Sample>
+    </Demo>
   );
 }

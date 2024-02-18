@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "prepare": "panda codegen",
-    "dev": "next dev",
+    "dev:next": "next dev",
+    "dev:panda": "panda --watch",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -18,6 +19,7 @@
     "optics-ts": "^2.4.1",
     "react": "^18",
     "react-dom": "^18",
+    "react18-json-view": "^0.2.7",
     "remark-mdx-images": "^3.0.0",
     "sharp": "^0.33.2",
     "zustand": "^4.5.0"

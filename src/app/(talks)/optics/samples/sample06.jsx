@@ -1,6 +1,7 @@
-"use client"
+"use client";
 import { useCallback, useState } from "react";
-import { Sample } from "@/components/sample";
+import { demo } from "@/components/demo";
+const { Demo, useDemo } = demo();
 
 const init = {
   temperature: 100,
@@ -40,48 +41,34 @@ const inc = (x) => x + 10;
 const dec = (x) => x - 10;
 
 function Temperature() {
-  const [state, setState] = useState(init);
-  const incHandler = useCallback(() => setState(fahrenheitProp.assoc(inc)), []);
-  const decHandler = useCallback(() => setState(fahrenheitProp.assoc(dec)), []);
+  const [state, setState] = useDemo();
+  const incHandler = useCallback(
+    () => setState(fahrenheitProp.assoc(inc)),
+    [setState]
+  );
+  const decHandler = useCallback(
+    () => setState(fahrenheitProp.assoc(dec)),
+    [setState]
+  );
   return (
-    <>
-      <div>{JSON.stringify(state)}</div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 5,
-        }}
-      >
-        <button onClick={decHandler}>-</button>
-        <div>{fahrenheitProp.get(state)}</div>
-        <button onClick={incHandler}>+</button>
-      </div>
-    </>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        gap: 5,
+      }}
+    >
+      <button onClick={decHandler}>-</button>
+      <div>{fahrenheitProp.get(state)}</div>
+      <button onClick={incHandler}>+</button>
+    </div>
   );
 }
 
 export function Sample06() {
   return (
-    <Sample>
+    <Demo init={init}>
       <Temperature />
-    </Sample>
-  );
-}
-
-function parts(separator) {
-  return lens(
-    (whole) => whole.split(separator),
-    (part) => (_whole) => part.join(separator)
-  );
-}
-
-const words = parts(" ");
-const elems = parts("+");
-
-function boolToInt() {
-  return lens(
-    (whole) => (whole ? 1 : 0),
-    (part) => (_whole) => part === 1
+    </Demo>
   );
 }

@@ -1,6 +1,7 @@
-"use client"
+"use client";
 import { useCallback, useState } from "react";
-import { Sample } from "@/components/sample";
+import { demo } from "@/components/demo";
+const { Demo, useDemo } = demo();
 
 function prism(get, set) {
   return {
@@ -26,38 +27,20 @@ const strToNum = prism(
 const init = 0;
 
 function Component() {
-  const [state, setState] = useState(init);
+  const [, setState] = useDemo();
   const [inputState, setInputState] = useState("");
   const changeHandler = useCallback((e) => {
     const value = e.target.value;
     setInputState(value);
     setState(strToNum.get(value));
-  }, []);
-  return (
-    <>
-      <div>{JSON.stringify(state) ?? "undefined"}</div>
-      <input type="String" value={inputState} onChange={changeHandler} />
-    </>
-  );
+  }, [setState]);
+  return <input type="String" value={inputState} onChange={changeHandler} />;
 }
 
 export function Sample07() {
   return (
-    <Sample>
+    <Demo init={init}>
       <Component />
-    </Sample>
+    </Demo>
   );
 }
-
-// predicate
-const isPositive = prism(
-  (whole) => (whole >= 0 ? whole : undefined),
-  (_whole, part) => part
-);
-
-// type guard
-const isNumber = prism(
-  (whole) => (typeof whole === "number" ? whole : undefined),
-  (_whole, part) => part
-);
-

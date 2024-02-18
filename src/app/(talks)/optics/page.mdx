@@ -1,3 +1,5 @@
+export const metadata = { title: "Functional Optics for State Management and Beyond" };
+
 import { Slide } from "@/components/slide";
 import { Sample01 } from "./samples/sample01";
 import { Sample03 } from "./samples/sample03";
@@ -262,7 +264,7 @@ const isPositive = prism(
 // type guard
 const isNumber = prism(
   (whole) => (typeof whole === "number" ? whole : undefined),
-  (\_whole, part) => part
+  (_whole, part) => part
 );
 
 // validator
@@ -286,23 +288,27 @@ struct({
 
 ## Optional (Affine Fold)
 
-<CH.Code>
-```jsx
-// from ./samples/sample08.jsx
-````
+read can fail
 
-</CH.Code>
+write can fail
+  - epressed as
+    - exception
+    - undefined
+    - tagged union
+    - return same value
+  - derived form read error
+    - (no optics that can only fail on write)
 
-- read can fail
-- write can fail
-  - exception, undefined, tagged union
-  - return same value
-  - derived form read error (no optics that can only fail on write)
-- combinations
+combinations
 - lens &middot; prism = optional
 - prism &middot; lens = optional
 - optional &middot; optional = optional
 - optional &middot; iso = optional
+<CH.Code>
+```jsx
+// from ./samples/sample08.jsx
+````
+</CH.Code>
 
 </Slide>
 
