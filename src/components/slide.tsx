@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import { ReactNode, useCallback, useEffect, useMemo, useRef } from "react";
-import { Box } from "@/../styled-system/jsx";
+import { VStack } from "@/../styled-system/jsx";
 import { state, useMainStore } from "./mainStore";
 
 const appendSlide = state.prop("slides");
@@ -23,8 +23,10 @@ export function Slide({ children }: { children: ReactNode }) {
   useEffect(() => (append(), remove), [append, remove]);
 
   return (
-    <Box ref={ref} minHeight="100vh">
-      {children}
-    </Box>
+    <VStack ref={ref} minHeight="100vh" justifyContent="center">
+      <VStack minWidth={500} alignItems="flex-start">
+        {children}
+      </VStack>
+    </VStack>
   );
 }

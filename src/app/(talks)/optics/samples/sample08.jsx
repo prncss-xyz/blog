@@ -25,13 +25,12 @@ function compose(a, b) {
   );
 }
 
-// index
-const at = (n) =>
+const at = (index) =>
   optional(
-    (whole) => whole.at(n),
+    (whole) => whole.at(index),
     (whole, part) => {
       const x = [...whole];
-      x[n] = part;
+      x[index] = part;
       return x;
     }
   );

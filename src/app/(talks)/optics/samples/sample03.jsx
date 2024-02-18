@@ -2,6 +2,7 @@
 import { useCallback } from "react";
 import { demo } from "@/components/demo";
 const { Demo, useDemo } = demo();
+import { Button } from "@/components/layout/button";
 
 function prop(key) {
   return {
@@ -19,12 +20,6 @@ function compose(a, b) {
 
 const lollyProp = compose(prop("nest"), prop("lolly"));
 
-const init = {
-  nest: {
-    lolly: 3,
-  },
-};
-
 function Component({ target }) {
   const [state, setState] = useDemo();
   const clickHandler = useCallback(
@@ -32,11 +27,17 @@ function Component({ target }) {
     [setState, target]
   );
   return (
-    <button disabled={lollyProp.get(state) === target} onClick={clickHandler}>
+    <Button disabled={lollyProp.get(state) === target} onClick={clickHandler}>
       {target}
-    </button>
+    </Button>
   );
 }
+
+const init = {
+  nest: {
+    lolly: 3,
+  },
+};
 
 export function Sample03() {
   return (

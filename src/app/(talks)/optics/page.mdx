@@ -1,5 +1,6 @@
 export const metadata = { title: "Functional Optics for State Management and Beyond" };
 
+import { Center } from "@/../styled-system/jsx";
 import { Slide } from "@/components/slide";
 import { Sample01 } from "./samples/sample01";
 import { Sample03 } from "./samples/sample03";
@@ -7,6 +8,9 @@ import { Sample04 } from "./samples/sample04";
 import { Sample05 } from "./samples/sample05";
 import { Sample06 } from "./samples/sample06";
 import { Sample07 } from "./samples/sample07";
+import { Aside } from "@/components/layout/aside"
+import { TwoCols } from "@/components/layout/two-cols"
+import { CodeCol } from "@/components/layout/code-col"
 
 <Slide>
 
@@ -31,15 +35,23 @@ import { Sample07 } from "./samples/sample07";
 
 ## The problem
 
-<CH.Code>
-```jsx
-// from ./samples/sample00.jsx
-```
-</CH.Code>
+<TwoCols>
+<Aside>
 
 - dot dot dot hell
 - implicit coupling
 - lack of intentionality
+
+</Aside>
+<CodeCol>
+<CH.Code style={{minWidth: 500}}>
+```jsx
+// from ./samples/sample00.jsx
+```
+</CH.Code>
+</CodeCol>
+</TwoCols>
+
 
 </Slide>
 
@@ -47,12 +59,8 @@ import { Sample07 } from "./samples/sample07";
 
 ## A First Lens
 
-<CH.Code>
-```jsx
-// from ./samples/sample01.jsx
-```
-</CH.Code>
-
+<TwoCols>
+<Aside>
 <Sample01 />
 
 - abstracts the concern of updating part of the structure
@@ -61,6 +69,18 @@ import { Sample07 } from "./samples/sample07";
 - explicit coupling
 - the focus
 - product type
+</Aside>
+<CodeCol>
+
+<CH.Code style={{minWidth: 500}}>
+```jsx
+// from ./samples/sample01.jsx 11:32
+```
+</CH.Code>
+</CodeCol>
+</TwoCols>
+
+
 
 </Slide>
 
@@ -68,7 +88,18 @@ import { Sample07 } from "./samples/sample07";
 
 ## Axioms of a Lens
 
-<CH.Code>
+<TwoCols>
+<Aside>
+- **get after set**: `l.get(l.set(a)(s)) === a`
+- **get after set**: `l.set(l.get(s))(s) === s`
+- **set after set**: `l.set(b)(l.set(a)(s)) === l.set(b)(s)`
+
+  - **idempotency**: `l.set(a)(l.set(a)(s)) === l.set(a)(s)`
+
+- great to write tests (property-based testing)
+</Aside>
+<CodeCol>
+<CH.Code style={{minWidth: 500}}>
 ```jsx
 function prop(key) {
   return {
@@ -78,14 +109,9 @@ function prop(key) {
 }
 ```
 </CH.Code>
+</CodeCol>
+</TwoCols>
 
-- **get after set**: `l.get(l.set(a)(s)) === a`
-- **get after set**: `l.set(l.get(s))(s) === s`
-- **set after set**: `l.set(b)(l.set(a)(s)) === l.set(b)(s)`
-
-  - **idempotency**: `l.set(a)(l.set(a)(s)) === l.set(a)(s)`
-
-- great to write tests (property-based testing)
 
 </Slide>
 
@@ -93,9 +119,9 @@ function prop(key) {
 
 ## Nested State
 
-<CH.Code>
+<CH.Code style={{minWidth: 500}}>
 ```jsx
-// from ./samples/sample02.jsx
+// from ./samples/sample02.jsx 9:21
 ```
 </CH.Code>
 
@@ -105,16 +131,20 @@ function prop(key) {
 
 ## Composition
 
-<CH.Code>
-```jsx
-// from ./samples/sample03.jsx
-````
-</CH.Code>
-
+<TwoCols>
+<Aside>
 <Sample03 />
-
 - If all composees respect lens laws, then so does the composed.
 - lens &middot; lens = lens
+</Aside>
+<CodeCol>
+<CH.Code style={{minWidth: 500}}>
+```jsx
+// from ./samples/sample03.jsx 7:34
+````
+</CH.Code>
+</CodeCol>
+</TwoCols>
 
 </Slide>
 
@@ -122,17 +152,21 @@ function prop(key) {
 
 ## Assoc
 
-<CH.Code>
-```jsx
-// from ./samples/sample04.jsx
-```
-
-</CH.Code>
-
+<TwoCols>
+<Aside>
 <Sample04 />
 
 - assoc and set can be derived from one another (will not true for all optics)
 - polymorphic lenses
+</Aside>
+<CodeCol>
+<CH.Code style={{minWidth: 500}}>
+```jsx
+// from ./samples/sample04.jsx 7:45
+```
+</CH.Code>
+</CodeCol>
+</TwoCols>
 
 </Slide>
 
@@ -140,12 +174,8 @@ function prop(key) {
 
 ## Element lens
 
-<CH.Code>
-```jsx
-// from ./samples/sample05.jsx
-```
-</CH.Code>
-
+<TwoCols>
+<Aside>
 <Sample05 />
 
 - API wants a `string[]`
@@ -153,6 +183,17 @@ function prop(key) {
 - parts do not need to reflect the constructor
 - is it a lens? (equivalence vs equality)
   - **set after set**: `l.set(b)(l.set(a)(s)) === l.set(b)(s)`
+</Aside>
+<CodeCol>
+<CH.Code style={{minWidth: 500}}>
+```jsx
+// from ./samples/sample05.jsx 6:56
+```
+</CH.Code>
+</CodeCol>
+</TwoCols>
+
+
 
 </Slide>
 
@@ -160,16 +201,13 @@ function prop(key) {
 
 ## Iso (isomorphism)
 
-<CH.Code>
-```jsx
-// from ./samples/sample06.jsx
-  ```
-</CH.Code>
 
+<TwoCols>
+<Aside>
 <Sample06 />
 
 - getter method independent of second parameter
-- "part" has as much information as "whole"
+- **part** has as much information as **whole**
 - application state in International System of Units (IS), API and GUI can be in any unit system
   - Mars Climate Oberver
   - On September 23, 1999, communication with the spacecraft was permanently lost as it went into orbital insertion.
@@ -177,6 +215,16 @@ function prop(key) {
   - lens &middot; iso = lens
   - iso &middot; lens = lens
   - iso &middot; iso = iso
+</Aside>
+
+<CodeCol>
+<CH.Code style={{minWidth: 500}}>
+```jsx
+// from ./samples/sample06.jsx 10:60
+  ```
+</CH.Code>
+</CodeCol>
+</TwoCols>
 
 </Slide>
 
@@ -184,7 +232,7 @@ function prop(key) {
 
 ## Parts
 
-<CH.Code>
+<CH.Code style={{minWidth: 500}}>
 ```jsx
 function parts(separator) {
   return lens(
@@ -205,7 +253,7 @@ const elems = parts("+");
 
 ## Bool to int
 
-<CH.Code>
+<CH.Code style={{minWidth: 500}}>
 ```jsx
 function boolToInt() {
   return lens(
@@ -225,11 +273,9 @@ function boolToInt() {
 
 ## Prism
 
-<CH.Code>
-```jsx
-// from ./samples/sample07.jsx
-  ```
-</CH.Code>
+<TwoCols>
+<Aside>
+<Sample07 />
 
 - failure on read
   - undefined, expection, tagged union
@@ -244,8 +290,17 @@ function boolToInt() {
   - prism &middot; prism = prism
   - prism &middot; iso = prism
   - iso &middot; prism = prism
+</Aside>
+<CodeCol>
+<CH.Code style={{minWidth: 500}}>
+```jsx
+// from ./samples/sample07.jsx 8:38
+  ```
+</CH.Code>
+</CodeCol>
+</TwoCols>
 
-<Sample07 />
+
 
 </Slide>
 
@@ -253,41 +308,54 @@ function boolToInt() {
 
 ## Predicates
 
-<CH.Code>
+<CH.Code style={{minWidth: 500}}>
 ```jsx
-// predicate
 const isPositive = prism(
   (whole) => (whole >= 0 ? whole : undefined),
   (_whole, part) => part
 );
 
-// type guard
+````
+</CH.Code>
+
+</Slide>
+<Slide>
+
+## Type guards
+
+<CH.Code style={{minWidth: 500}}>
+```jsx
 const isNumber = prism(
   (whole) => (typeof whole === "number" ? whole : undefined),
   (_whole, part) => part
 );
+````
 
-// validator
+</CH.Code>
+</Slide>
+
+
+<Slide>
+
+## validator
+
+<CH.Code style={{minWidth: 500}}>
+```jsx
 struct({
   x: strToNum,
   y: isPositive,
   z: isNumber,
 })
-
 ````
 </CH.Code>
-
-- predicate vs filter
-- type guard
-- pattern matching
-- validator
-
 </Slide>
 
 <Slide>
 
 ## Optional (Affine Fold)
 
+<TwoCols>
+<Aside>
 read can fail
 
 write can fail
@@ -304,20 +372,24 @@ combinations
 - prism &middot; lens = optional
 - optional &middot; optional = optional
 - optional &middot; iso = optional
-<CH.Code>
+</Aside>
+<CodeCol>
+<CH.Code style={{minWidth: 500}}>
 ```jsx
 // from ./samples/sample08.jsx
 ````
 </CH.Code>
+</CodeCol>
+</TwoCols>
 
 </Slide>
 
 <Slide>
 
-### Other optics
+### Other optics (single focus)
 
-![class diagram](./class-diagram.png)
-
+<TwoCols>
+<Aside>
 - getters:
   - number of cats
 - affine fold
@@ -331,9 +403,17 @@ combinations
   - convenience (type inference)
   - custom deep equality check
   - lens with identity relation
+</Aside>
+<CodeCol>
+![class diagram](./class-diagram.png)
+</CodeCol>
+</TwoCols>
+</Slide>
+<Slide>
 
-#### Multiple focus
-
+### Other optics (multiple focus)
+<TwoCols>
+<Aside>
 - fold
   - two longuest cat's names
 - transversals
@@ -344,8 +424,9 @@ combinations
     - appends "minou" to names
 
 - composition
-
-<CH.Code>
+</Aside>
+<CodeCol>
+<CH.Code style={{minWidth: 500}}>
 
 ```tsx
 const init = {
@@ -359,7 +440,7 @@ const init = {
 
 </CH.Code>
 
-<CH.Code>
+<CH.Code style={{minWidth: 500}}>
   ```tsx 
 const init = {
   cats = [
@@ -371,7 +452,7 @@ const init = {
   ```
 </CH.Code>
 
-<CH.Code>
+<CH.Code style={{minWidth: 500}}>
 ```tsx
 const init = {
   cats = [
@@ -383,6 +464,8 @@ const init = {
 ```
 
 </CH.Code>
+</CodeCol>
+</TwoCols>
 
 </Slide>
 <Slide>
@@ -394,6 +477,11 @@ const init = {
 - 10 LOC
 - separation of concern
 - handling convertions between structures
+
+</Slide>
+<Slide>
+
+## Implementations
 
 ### Older stuff
 
@@ -411,6 +499,11 @@ const init = {
 - [calmm-js/partial.lenses](https://github.com/calmm-js/partial.lenses#use-of-undefined) old (pre-ts), but lots of stuff
 - [cyclejs](https://cycle.js.org/)
 
+</Slide>
+<Slide>
+
+## Implementations
+
 ### Modern libraries
 
 - [optics-ts](https://akheron.github.io/optics-ts/reference-mc/)
@@ -427,8 +520,9 @@ const init = {
   - somewhat an alternative to zod
 
 </Slide>
-
 <Slide>
+
+## Implementations
 
 ### React Integrations
 
@@ -442,14 +536,19 @@ const init = {
 
 #### Zustand
 
+<TwoCols>
+<Aside>
 - Docs refers to ramda and optics-ts as fancy setters
 - [Practice with no store actions](https://docs.pmnd.rs/zustand/guides/practice-with-no-store-actions)
-
-<CH.Code>
+</Aside>
+<CodeCol>
+<CH.Code style={{minWidth: 500}}>
 ```jsx
 // from ../../../components/stores.ts
 ````
 </CH.Code>
+</CodeCol>
+</TwoCols>
 
 </Slide>
 
@@ -457,7 +556,7 @@ const init = {
 
 #### Zustand
 
-<CH.Code>
+<CH.Code style={{minWidth: 500}}>
 ```jsx
 import { optic } from "optics-ts";
 import { createHooks } from "./stores";
@@ -488,7 +587,6 @@ export const useMainStore = createHooks(useBoundStore);
 </CH.Code>
 
 </Slide>
-
 <Slide>
 
 ## What are the alternatives (front-end)
@@ -504,13 +602,15 @@ export const useMainStore = createHooks(useBoundStore);
 - state management: valtio
 - framework: solidjs
 
+</Slide>
+<Slide>
+
 ## What are the complements
 
 - spatial vs temporal (observable, finite state machine)
-
 - Konami Code
 
-![Konami Code](./Konami_Code.svg)
+![Konami Code](./konami-code.svg)
 
 - async reactivity: rxjs
 - state machine: xstate
@@ -527,6 +627,3 @@ export const useMainStore = createHooks(useBoundStore);
 - shared accross languages and frameworks
 
 </Slide>
-
-- injectivity (prism, iso)
-- sirens

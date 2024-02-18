@@ -1,7 +1,8 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { demo } from "@/components/demo";
 const { Demo, useDemo } = demo();
+import { Button } from "@/components/layout/button";
 
 function lens(get, set) {
   return {
@@ -36,8 +37,11 @@ const init = {
 
 function Component() {
   const [, setState] = useDemo();
-  const clickHandler = useCallback(() => setState(lollyProp.assoc(inc)), [setState]);
-  return <button onClick={clickHandler}>+</button>;
+  const clickHandler = useCallback(
+    () => setState(lollyProp.assoc(inc)),
+    [setState]
+  );
+  return <Button onClick={clickHandler}>+</Button>;
 }
 
 export function Sample04() {

@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { demo } from "@/components/demo";
 const { Demo, useDemo } = demo();
 
@@ -45,27 +45,19 @@ function TagToggler({ tag }) {
   }, [setState, tagLens]);
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 5,
-        }}
-      >
-        <input
-          type="checkbox"
-          checked={tagLens.get(state)}
-          onChange={clickHandler}
-        />
-        <div>{tag}</div>
-      </div>
+      <input
+        type="checkbox"
+        checked={tagLens.get(state)}
+        onChange={clickHandler}
+      />
+      <div>{tag}</div>
     </>
   );
 }
 
 export function Sample05() {
   return (
-    <Demo init={init}>
+    <Demo init={init} height={90}>
       <TagToggler tag="flaming" />
     </Demo>
   );

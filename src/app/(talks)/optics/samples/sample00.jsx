@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { Button } from "@/components/layout/button";
 
 const init = {
   lolly: 3,
@@ -12,8 +13,8 @@ export function Component({ target }) {
     [state, target]
   );
   return (
-    <button disabled={disabled} onClick={clickHandler}>
+    <Button disabled={disabled} onClick={clickHandler}>
       {target}
-    </button>
+    </Button>
   );
 }

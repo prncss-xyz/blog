@@ -2,12 +2,12 @@
 import { useCallback } from "react";
 import { demo } from "@/components/demo";
 const { Demo, useDemo } = demo();
+import { Button } from "@/components/layout/button";
 
 const init = {
   lolly: 3,
 };
 
-// abstracts the concern of updating part of the structure
 function prop(key) {
   return {
     get: (whole) => whole[key],
@@ -25,9 +25,9 @@ export function Component({ target }) {
     [setState, target]
   );
   return (
-    <button disabled={disabled} onClick={clickHandler}>
+    <Button disabled={disabled} onClick={clickHandler}>
       {target}
-    </button>
+    </Button>
   );
 }
 

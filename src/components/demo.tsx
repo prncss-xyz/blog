@@ -77,19 +77,34 @@ export function demo<State>() {
     return value;
   }
 
-  function Demo({ init, children }: { init: State; children: ReactNode }) {
+  function Demo({
+    init,
+    children,
+    height,
+  }: {
+    init: State;
+    children: ReactNode;
+    height?: number;
+  }) {
     const value = useState(init);
     const reset = useCallback(() => value[1](init), [init, value]);
     return (
       <DemoContext.Provider value={value}>
-        <VStack gap={5} alignItems="flex-start">
-          <Box p={5}>{children}</Box>
+        <HStack gap={5} alignItems="center" justifyContent="center">
+          <HStack p={5} gap={5}>
+            {children}
+          </HStack>
           <div onClick={reset}>
-            <Box backgroundColor="lightgray" p={5} borderRadius={3}>
+            <Box
+              backgroundColor="lightgray"
+              p={5}
+              borderRadius={3}
+              style={{ height }}
+            >
               <Json value={value[0]} first />
             </Box>
           </div>
-        </VStack>
+        </HStack>
       </DemoContext.Provider>
     );
   }

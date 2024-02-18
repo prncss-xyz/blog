@@ -1,7 +1,8 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { demo } from "@/components/demo";
 const { Demo, useDemo } = demo();
+import { Button } from "@/components/layout/button";
 
 const init = {
   temperature: 100,
@@ -51,17 +52,11 @@ function Temperature() {
     [setState]
   );
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        gap: 5,
-      }}
-    >
-      <button onClick={decHandler}>-</button>
+    <>
+      <Button onClick={decHandler}>-</Button>
       <div>{fahrenheitProp.get(state)}</div>
-      <button onClick={incHandler}>+</button>
-    </div>
+      <Button onClick={incHandler}>+</Button>
+    </>
   );
 }
 

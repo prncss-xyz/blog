@@ -3,6 +3,8 @@ import { useCallback, useState } from "react";
 import { demo } from "@/components/demo";
 const { Demo, useDemo } = demo();
 
+const init = 0;
+
 function prism(get, set) {
   return {
     get,
@@ -23,8 +25,6 @@ const strToNum = prism(
   },
   (_str, num) => String(num)
 );
-
-const init = 0;
 
 function Component() {
   const [, setState] = useDemo();
