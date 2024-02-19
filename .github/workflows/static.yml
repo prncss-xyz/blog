@@ -44,6 +44,8 @@ jobs:
         run: pnpm install
       - name: Perpare
         run: pnpm run prepare      
+      - name: Perpare style
+        run: pnpm run prepare:style      
       - name: Build
         run: pnpm run build       
       - name: Setup Pages

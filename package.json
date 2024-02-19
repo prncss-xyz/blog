@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "prepare": "panda codegen",
+    "prepare:style": "panda",
     "dev:next": "next dev",
     "dev:panda": "panda --watch",
     "build": "next build",
