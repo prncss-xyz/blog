@@ -44,7 +44,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 				<Box fontSize={5}>{title}</Box>
 				<Menu home='about' allPages={allPages} />
 			</Row>
-			<Col minW='readable' grow={1} as='main'>
+			<Col bg='translucent' p={3} minW='readable' grow={1} as='main'>
 				{children}
 			</Col>
 			<Row color='accent' gap={4} as='footer'>

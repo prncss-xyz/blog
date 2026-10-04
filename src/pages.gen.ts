@@ -23,12 +23,17 @@ type Page =
 | ({ path: '/qr' } & GetConfigResponse<typeof File_Qr_getConfig>);
 
 // prettier-ignore
+type Layout =
+| { path: '/' };
+
+// prettier-ignore
 declare module 'waku/router' {
   interface RouteConfig {
     paths: PathsForPages<Page>;
   }
   interface CreatePagesConfig {
     pages: Page;
+    layouts: Layout;
   }
   interface SearchCodecsConfig extends SearchCodecsForPages<Page> {}
 }
