@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="92" height="131.516682" viewBox="0 -7.500383 92 131.516682">
+  <!-- Bleed the base fill past the viewport to avoid antialiased dark seams. -->
+  <rect x="-1" y="-9" width="94" height="135" fill="#303030"/>
+  <!-- The row spacing gives the dark diagonal channel the same 13-unit
+       thickness as the light stroke. Wrap miters from adjacent rows. -->
+  <defs>
+    <path id="hex" d="M-33 109 0 128 33 109V69L13 57V19L46 0 79 19V57L59 69V109L92 128 125 109"/>
+  </defs>
+  <g fill="none" stroke="#686868" stroke-width="13">
+    <use href="#hex" y="-131.516682"/>
+    <use href="#hex"/>
+    <use href="#hex" y="131.516682"/>
+  </g>
+  <g fill="#484848">
+    <path d="m46 22 13 7.5v15L46 52l-13-7.5v-15Z"/>
+    <path d="m0 74 13 7.5v15L0 104l-13-7.5v-15Z"/>
+    <path d="m92 74 13 7.5v15L92 104l-13-7.5v-15Z"/>
+  </g>
+</svg>

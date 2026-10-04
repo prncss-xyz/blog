@@ -27,7 +27,7 @@ export function PageContents({ children }: { children: ReactNode }) {
 
 	return (
 		<ViewTransition key={path} name='page-contents' default={crossfade}>
-			<Col bg='translucent' p={3} minW='readable' grow={1} as='main'>
+			<Col bg='translucent' p={5} minW='readable' grow={1} as='main'>
 				{children}
 			</Col>
 		</ViewTransition>

@@ -1,3 +1,4 @@
+import * as stylex from '@stylexjs/stylex'
 import { allPages } from 'content-collections'
 import { settings } from 'content-collections'
 import type { ReactNode } from 'react'
@@ -13,12 +14,19 @@ const { title, description } = settings
 
 type RootLayoutProps = { children: ReactNode }
 
+const styles = stylex.create({
+	pageBackground: (imageUrl: string) => ({
+		backgroundColor: '#303030',
+		backgroundImage: imageUrl,
+		backgroundPosition: '0 -44.500383px',
+		backgroundRepeat: 'repeat',
+	}),
+})
+
 export default async function RootLayout({ children }: RootLayoutProps) {
 	return (
 		<Col
 			pt={8}
-			pb={6}
-			gap={8}
 			fontFamily='base'
 			minH='screen'
 			align='center'
@@ -45,10 +53,23 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 				<Box fontSize={5}>{title}</Box>
 				<Menu home='about' allPages={allPages} />
 			</Row>
-			<PageContents>{children}</PageContents>
-			<Row color='accent' gap={4} as='footer'>
-				<LinkIcons />
-			</Row>
+			<Col
+				style={styles.pageBackground(
+					`url("${basePath}images/hex-pattern.svg")`,
+				)}
+				w='full'
+				grow={1}
+				pt={8}
+				pb={6}
+				gap={8}
+				align='center'
+				justify='between'
+			>
+				<PageContents>{children}</PageContents>
+				<Row color='accent' gap={4} as='footer'>
+					<LinkIcons />
+				</Row>
+			</Col>
 		</Col>
 	)
 }
