@@ -35,8 +35,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			<PageMeta title={title} description={description} />
 			<link
 				rel='icon'
-				type='image/png'
-				href={basePath + 'images/favicon.png'}
+				type='image/svg+xml'
+				href={basePath + 'images/favicon.svg'}
 			/>
 			<DevStyleXInject />
 			<Row
