@@ -3,6 +3,7 @@ import { settings } from 'content-collections'
 import type { ReactNode } from 'react'
 
 import { Menu } from '@/components/Menu'
+import { PageContents } from '@/components/PageContents'
 import { PageMeta } from '@/components/PageMeta'
 import { LinkIcons } from '@/features/IconLinks'
 import { Box, Col, Row } from '@/layouts/Box'
@@ -44,9 +45,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 				<Box fontSize={5}>{title}</Box>
 				<Menu home='about' allPages={allPages} />
 			</Row>
-			<Col bg='translucent' p={3} minW='readable' grow={1} as='main'>
-				{children}
-			</Col>
+			<PageContents>{children}</PageContents>
 			<Row color='accent' gap={4} as='footer'>
 				<LinkIcons />
 			</Row>
