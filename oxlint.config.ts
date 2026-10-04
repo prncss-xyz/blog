@@ -7,7 +7,7 @@ const lintConfig: OxlintConfig = {
 	env: {
 		builtin: true,
 	},
-	ignorePatterns: ['.*'],
+	ignorePatterns: ['.*', 'src/pages.gen.ts'],
 	plugins: ['jsx-a11y'],
 	jsPlugins: [
 		{

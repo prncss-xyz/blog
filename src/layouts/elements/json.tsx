@@ -36,9 +36,7 @@ function highlightJson(highlighter: Highlighter, jsonStr: string): string {
 					const currentClass = node.properties.className
 					const currentClasses = Array.isArray(currentClass)
 						? currentClass.map(String)
-						: typeof currentClass === 'string'
-							? currentClass.split(' ')
-							: []
+						: []
 					node.properties.className = currentClasses
 				},
 			},
