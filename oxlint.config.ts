@@ -8,7 +8,7 @@ const lintConfig: OxlintConfig = {
 		builtin: true,
 	},
 	ignorePatterns: ['.*', 'src/pages.gen.ts'],
-	plugins: ['jsx-a11y'],
+	plugins: ['jsx-a11y', 'react'],
 	jsPlugins: [
 		{
 			name: 'stylex',
@@ -50,6 +50,18 @@ const lintConfig: OxlintConfig = {
 		},
 	],
 	rules: {
+		'react/error-boundaries': 'error',
+		'react/globals': 'error',
+		'react/immutability': 'error',
+		'react/incompatible-library': 'error',
+		'react/preserve-manual-memoization': 'error',
+		'react/purity': 'error',
+		'react/refs': 'error',
+		'react/set-state-in-effect': 'error',
+		'react/set-state-in-render': 'error',
+		'react/static-components': 'error',
+		'react/use-memo': 'error',
+		'react/unsupported-syntax': 'error',
 		'constructor-super': 'error',
 		'for-direction': 'error',
 		'no-array-constructor': 'error',

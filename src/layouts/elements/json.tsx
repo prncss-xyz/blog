@@ -61,30 +61,22 @@ export function Json({
 }: { u: unknown } & Omit<BoxProps<'div'>, 'children'>) {
 	const jsonStr = JSON.stringify(u, null, 2)
 
-	const [html, setHtml] = useState<string | null>(() => {
-		if (cachedHighlighter) {
-			return highlightJson(cachedHighlighter, jsonStr)
-		}
-		return null
-	})
+	const [highlighter, setHighlighter] = useState<Highlighter | null>(
+		() => cachedHighlighter,
+	)
 
 	useEffect(() => {
-		if (cachedHighlighter) {
-			setHtml(highlightJson(cachedHighlighter, jsonStr))
-			return
-		}
-
 		let active = true
 		highlighterPromise.then((highlighter) => {
 			if (!active) return
-			setHtml(highlightJson(highlighter, jsonStr))
+			setHighlighter(highlighter)
 		})
 		return () => {
 			active = false
 		}
-	}, [jsonStr])
+	}, [])
 
-	if (html === null) {
+	if (highlighter === null) {
 		return (
 			<CodeBox {...rest}>
 				cacac
@@ -92,5 +84,6 @@ export function Json({
 			</CodeBox>
 		)
 	}
+	const html = highlightJson(highlighter, jsonStr)
 	return <CodeBox {...rest} dangerouslySetInnerHTML={{ __html: html }} />
 }

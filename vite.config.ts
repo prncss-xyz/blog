@@ -1,9 +1,8 @@
 import { fileURLToPath } from 'node:url'
 
 import contentCollections from '@content-collections/vite'
-import babel from '@rolldown/plugin-babel'
 import stylex from '@stylexjs/unplugin'
-import react, { reactCompilerPreset } from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react'
 import { ViteWebfontDownload } from 'vite-plugin-webfont-dl'
 import { defineConfig } from 'vite-plus'
 
@@ -55,8 +54,7 @@ export default defineConfig({
 					runtimeInjection: false,
 					useCSSLayers: true,
 				}),
-		react(),
-		babel({ presets: [reactCompilerPreset()] }),
+		react({ compiler: true }),
 		contentCollections({
 			isEnabled: () => !process.env.VITEST,
 		}),

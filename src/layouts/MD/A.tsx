@@ -15,20 +15,19 @@ const styles = stylex.create({
 export function A({ children, href, style, ...rest }: ReElemProps<'a'>) {
 	if (href && (href.startsWith('/') || href.startsWith('.')))
 		return (
-			<Link
-				children={children}
-				to={href as any}
-				{...rest}
-				{...stylex.props([styles.base, style])}
-			/>
+			<Link to={href as any} {...rest} {...stylex.props([styles.base, style])}>
+				{children}
+			</Link>
 		)
 	return (
 		<a
-			children={children}
 			href={href}
 			target='_blank'
+			rel='noreferrer'
 			{...rest}
 			{...stylex.props([styles.base, style])}
-		/>
+		>
+			{children}
+		</a>
 	)
 }

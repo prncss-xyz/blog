@@ -25,9 +25,9 @@ export default async function PostsIndex() {
 			{sortedBlogs.length ? (
 				<Col as='ul' gap={6}>
 					{sortedBlogs.map((post) => (
-						<li>
+						<li key={post.slug}>
 							<Link to={`/blog/${post._meta.path}`}>
-								<Col key={post.slug}>
+								<Col>
 									<H2 textAlign='left'>{post.title}</H2>
 									<div>{post.date}</div>
 								</Col>
