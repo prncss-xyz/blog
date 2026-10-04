@@ -310,7 +310,7 @@ const backgroundVariants = stylex.create({
 	accent: { backgroundColor: colors.accent },
 	accentBg: { backgroundColor: colors.accentBg },
 	translucent: {
-		backgroundColor: `color-mix(in srgb, ${colors.background}, transparent 20%)`,
+		backgroundColor: `color-mix(in srgb, ${colors.background}, transparent 40%)`,
 		backdropFilter: 'blur(12px)',
 	},
 })

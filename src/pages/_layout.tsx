@@ -66,7 +66,15 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 				justify='between'
 			>
 				<PageContents>{children}</PageContents>
-				<Row color='accent' gap={4} as='footer'>
+				<Row
+					minW='readable'
+					justify='center'
+					py={3}
+					color='accent'
+					bg='translucent'
+					gap={4}
+					as='footer'
+				>
 					<LinkIcons />
 				</Row>
 			</Col>
