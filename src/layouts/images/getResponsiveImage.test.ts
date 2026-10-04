@@ -5,6 +5,8 @@ import { join } from 'node:path'
 import sharp from 'sharp'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
+import { basePath } from '@/meta'
+
 import { getResponsiveImage } from './getResponsiveImage'
 
 const remoteUrl = 'https://example.com/cat.png'
@@ -87,7 +89,10 @@ describe('getResponsiveImage', () => {
 		expect(image.alt).toBe('cat')
 		expect(image.width).toBe(40)
 		expect(image.height).toBe(30)
-		expect(image.src).toMatch(/^\/gen\/[a-f0-9]{12}\.webp$/)
+		expect(image.src.startsWith(basePath)).toBe(true)
+		expect(image.src.slice(basePath.length)).toMatch(
+			/^gen\/[a-f0-9]{12}\.webp$/,
+		)
 		expect(image.srcSet.split(', ')).toHaveLength(8)
 		expect(image.placeholder).toMatch(/^data:image\/svg\+xml;base64,/)
 		expect(await readFiles(join(cacheRoot, 'originals'))).toHaveLength(1)
