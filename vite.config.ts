@@ -165,24 +165,26 @@ export default defineConfig({
 				command: 'vp test --changed',
 			},
 			ci: {
-				command: 'true',
-				dependsOn: [
-					'check',
-					'check:knip',
-					'build',
-					'tsc',
-					'test:units',
-					'test:e2e',
+				// Cancelling parallel tasks can orphan Playwright's web server and
+				// keep the runner's output pipes open after a test failure.
+				cache: false,
+				command: [
+					'vp run test:units',
+					'vp run check:knip',
+					'vp run build',
+					'vp run check',
+					'vp run tsc',
+					'vp run test:e2e',
 				],
 			},
 			pre_commit: {
-				command: 'true',
-				dependsOn: [
-					'check:knip',
-					'build',
-					'tsc:changed',
-					'test:units:changed',
-					'test:e2e:changed',
+				cache: false,
+				command: [
+					'vp run test:units:changed',
+					'vp run check:knip',
+					'vp run build',
+					'vp run tsc:changed',
+					'vp run test:e2e:changed',
 				],
 			},
 		},
