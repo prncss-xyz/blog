@@ -108,10 +108,23 @@ function ContentCrossfade({ path, children }: ContentProps) {
 	)
 }
 
-export function PageContents({ children }: { children: ReactNode }) {
+export function PageContents({
+	children,
+	style,
+}: {
+	children: ReactNode
+	style?: stylex.StyleXStyles
+}) {
 	const { path } = useRouter()
 	return (
-		<Col bg='translucent' p={5} minW='readable' grow={1} as='main'>
+		<Col
+			bg='translucent'
+			p={5}
+			minW='readable'
+			grow={1}
+			as='main'
+			style={style}
+		>
 			<ContentCrossfade path={path}>{children}</ContentCrossfade>
 		</Col>
 	)

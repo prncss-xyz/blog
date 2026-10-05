@@ -1,5 +1,6 @@
 import * as stylex from '@stylexjs/stylex'
 
+import { borderRadii } from './tokens/borderRadii.stylex'
 import { borderWidth } from './tokens/borderWidth.stylex'
 import { colors } from './tokens/colors.stylex'
 import { fontFamilies } from './tokens/fontFamilies.stylex'
@@ -306,6 +307,11 @@ const borderColorVariants = stylex.create({
 	accentBg: { borderColor: colors.accentBg },
 })
 
+const borderRadiusVariants = stylex.create({
+	1: { borderRadius: borderRadii[1] },
+	round: { borderRadius: borderRadii.round },
+})
+
 const borderWidthVariants = stylex.create({
 	none: { borderWidth: borderWidth.none },
 	thin: { borderWidth: borderWidth.thin },
@@ -340,6 +346,7 @@ type BoxBaseProps<E extends React.ElementType = React.ElementType> = {
 	bg?: keyof typeof backgroundVariants
 	borderColor?: keyof typeof borderColorVariants
 	border?: keyof typeof borderVariants
+	borderRadius?: keyof typeof borderRadiusVariants
 	borderWidth?: keyof typeof borderWidthVariants
 	w?: keyof typeof widthVariants
 	p?: keyof typeof pVariants
@@ -383,6 +390,7 @@ export function Box<E extends React.ElementType = typeof defaultElement>({
 	bg: background,
 	borderColor,
 	border,
+	borderRadius,
 	borderWidth,
 	w,
 	p,
@@ -427,6 +435,7 @@ export function Box<E extends React.ElementType = typeof defaultElement>({
 		background && backgroundVariants[background],
 		borderColor && borderColorVariants[borderColor],
 		border && borderVariants[border],
+		borderRadius && borderRadiusVariants[borderRadius],
 		borderWidth && borderWidthVariants[borderWidth],
 		style,
 	])

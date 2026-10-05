@@ -9,12 +9,20 @@ import { PageMeta } from '@/components/PageMeta'
 import { LinkIcons } from '@/features/IconLinks'
 import { Box, Col, Row } from '@/layouts/Box'
 import { DevStyleXInject } from '@/layouts/DevStyleXInject'
+import { borderRadii } from '@/layouts/tokens/borderRadii.stylex'
+import { sizeBreakpoints } from '@/layouts/tokens/sizeBreakpoints.stylex'
 import { basePath } from '@/meta'
 const { title, description } = settings
 
 type RootLayoutProps = { children: ReactNode }
 
 const styles = stylex.create({
+	panel: {
+		borderRadius: {
+			default: borderRadii[1],
+			[sizeBreakpoints.readableOrLess]: '0px',
+		},
+	},
 	pageBackground: (imageUrl: string) => ({
 		backgroundColor: '#303030',
 		backgroundImage: imageUrl,
@@ -65,8 +73,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 				align='center'
 				justify='between'
 			>
-				<PageContents>{children}</PageContents>
+				<PageContents style={styles.panel}>{children}</PageContents>
 				<Row
+					style={styles.panel}
 					minW='readable'
 					justify='center'
 					py={3}
