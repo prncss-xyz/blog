@@ -26,6 +26,34 @@ const styles = stylex.create({
 
 type ContentProps = { path: string; children: ReactNode }
 
+function startCrossfade(
+	layers: HTMLElement,
+	content: HTMLElement,
+	outgoing: HTMLElement,
+	duration: number,
+) {
+	const { className } = stylex.props(styles.outgoing)
+	if (className) outgoing.classList.add(...className.split(' '))
+	outgoing.inert = true
+	outgoing.setAttribute('aria-hidden', 'true')
+	layers.append(outgoing)
+
+	const options = { duration, easing: 'linear', fill: 'both' as const }
+	const animations = [
+		outgoing.animate({ opacity: [1, 0] }, options),
+		content.animate({ opacity: [0, 1] }, options),
+	]
+	function cleanup() {
+		animations.forEach((animation) => animation.cancel())
+		outgoing.remove()
+	}
+	void Promise.all(animations.map((animation) => animation.finished)).then(
+		cleanup,
+		() => {},
+	)
+	return cleanup
+}
+
 // Waku's route children resolve through context, so retaining the ReactNode
 // would render the new page twice. Keep a DOM copy of the committed page.
 function ContentCrossfade({ path, children }: ContentProps) {
@@ -58,39 +86,16 @@ function ContentCrossfade({ path, children }: ContentProps) {
 			attributes: true,
 		})
 
-		let outgoing: HTMLElement | null = null
-		let animations: Animation[] = []
-		function clearAnimation() {
-			animations.forEach((animation) => animation.cancel())
-			animations = []
-			outgoing?.remove()
-			outgoing = null
-		}
-
 		const duration =
 			Number.parseFloat(getComputedStyle(content).animationDuration) * 1000
-		if (previous && previous.path !== path && duration > 0) {
-			outgoing = previous.snapshot
-			const { className } = stylex.props(styles.outgoing)
-			if (className) outgoing.classList.add(...className.split(' '))
-			outgoing.inert = true
-			outgoing.setAttribute('aria-hidden', 'true')
-			layers.append(outgoing)
-
-			const options = { duration, easing: 'linear', fill: 'both' as const }
-			animations = [
-				outgoing.animate({ opacity: [1, 0] }, options),
-				content.animate({ opacity: [0, 1] }, options),
-			]
-			void Promise.all(animations.map((animation) => animation.finished)).then(
-				clearAnimation,
-				() => {},
-			)
-		}
+		const clearAnimation =
+			previous && previous.path !== path && duration > 0
+				? startCrossfade(layers, content, previous.snapshot, duration)
+				: undefined
 
 		return () => {
 			observer.disconnect()
-			clearAnimation()
+			clearAnimation?.()
 		}
 	}, [path])
 
