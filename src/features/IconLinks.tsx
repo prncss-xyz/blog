@@ -26,6 +26,8 @@ function IconLink({
 		<Row
 			as='a'
 			href={href}
+			target='_blank'
+			rel='noreferrer'
 			title={title}
 			aria-label={title}
 			type={type}
