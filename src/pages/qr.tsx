@@ -8,7 +8,7 @@ const { title } = settings
 
 export default async function QRPage() {
 	return (
-		<Col minW='qrContainer' minH='qrContainer'>
+		<Col>
 			<title>{'QR CODE - ' + title}</title>
 			<QRView href={baseUrl} name={title} />
 		</Col>

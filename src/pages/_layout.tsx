@@ -3,20 +3,28 @@ import { allPages } from 'content-collections'
 import { settings } from 'content-collections'
 import type { ReactNode } from 'react'
 
-import { Menu } from '@/components/Menu'
+import { NavLink } from '@/components/NavLink'
 import { PageContents } from '@/components/PageContents'
 import { PageMeta } from '@/components/PageMeta'
 import { LinkIcons } from '@/features/IconLinks'
 import { Box, Col, Row } from '@/layouts/Box'
 import { DevStyleXInject } from '@/layouts/DevStyleXInject'
 import { borderRadii } from '@/layouts/tokens/borderRadii.stylex'
+import { colors } from '@/layouts/tokens/colors.stylex'
 import { sizeBreakpoints } from '@/layouts/tokens/sizeBreakpoints.stylex'
 import { basePath } from '@/meta'
 const { title, description } = settings
 
-type RootLayoutProps = { children: ReactNode }
-
 const styles = stylex.create({
+	header: {
+		maxWidth: '45rem',
+	},
+	navLink: {
+		color: {
+			default: colors.muted,
+			':is([aria-current="page"])': colors.text,
+		},
+	},
 	panel: {
 		borderRadius: {
 			default: borderRadii[1],
@@ -31,7 +39,11 @@ const styles = stylex.create({
 	}),
 })
 
-export default async function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({
+	children,
+}: {
+	children: ReactNode
+}) {
 	return (
 		<Col
 			pt={8}
@@ -49,7 +61,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 			<DevStyleXInject />
 			<Row
 				as='header'
-				px={6}
+				style={styles.header}
 				pb={4}
 				w='full'
 				align='center'
@@ -59,7 +71,16 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 				border='bottom'
 			>
 				<Box fontSize={5}>{title}</Box>
-				<Menu home='about' allPages={allPages} />
+				<Row gap={5}>
+					{allPages.map(({ slug, title }) => {
+						const to = '/' + (slug === 'about' ? '' : slug)
+						return (
+							<Box as={NavLink} key={to} to={to} style={styles.navLink}>
+								{title}
+							</Box>
+						)
+					})}
+				</Row>
 			</Row>
 			<Col
 				style={styles.pageBackground(

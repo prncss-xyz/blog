@@ -22,7 +22,7 @@ async function QRCode({ href, name }: { href: string; name: string }) {
 
 export function QRView({ href, name }: { href: string; name: string }) {
 	return (
-		<Col align='center' gap={5} w='halfScreen' h='halfScreen'>
+		<Col align='center' gap={5}>
 			<QRCode href={href} name={name} />
 			<Box fontSize={4} fontWeight='bold' as='a' href={href}>
 				{name}

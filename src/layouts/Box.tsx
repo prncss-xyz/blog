@@ -12,7 +12,6 @@ import { spaces } from './tokens/spaces.stylex'
 const heightVariants = stylex.create({
 	full: { height: sizes.full },
 	readable: { height: sizes.readable },
-	qrContainer: { height: sizes.qrContainer },
 	halfScreen: { height: '50vh' },
 	screen: { height: '100vh' },
 })
@@ -20,7 +19,6 @@ const heightVariants = stylex.create({
 const widthVariants = stylex.create({
 	full: { width: sizes.full },
 	readable: { width: sizes.readable },
-	qrContainer: { width: sizes.qrContainer },
 	halfScreen: { width: '50vw' },
 	screen: { width: '100vw' },
 })
@@ -28,7 +26,6 @@ const widthVariants = stylex.create({
 const minWidthVariants = stylex.create({
 	full: { minWidth: sizes.full },
 	readable: { minWidth: sizes.readable },
-	qrContainer: { minWidth: sizes.qrContainer },
 	halfScreen: { minWidth: '50vw' },
 	screen: { minWidth: '100vw' },
 })
@@ -36,7 +33,6 @@ const minWidthVariants = stylex.create({
 const maxWidthVariants = stylex.create({
 	full: { maxWidth: sizes.full },
 	readable: { maxWidth: sizes.readable },
-	qrContainer: { maxWidth: sizes.qrContainer },
 	halfScreen: { maxWidth: '50vw' },
 	screen: { maxWidth: '100vw' },
 })
@@ -44,7 +40,6 @@ const maxWidthVariants = stylex.create({
 const minHeightVariants = stylex.create({
 	full: { minHeight: sizes.full },
 	readable: { minHeight: sizes.readable },
-	qrContainer: { minHeight: sizes.qrContainer },
 	halfScreen: { minHeight: '50vh' },
 	screen: { minHeight: '100vh' },
 })
@@ -52,7 +47,6 @@ const minHeightVariants = stylex.create({
 const maxHeightVariants = stylex.create({
 	full: { maxHeight: sizes.full },
 	readable: { maxHeight: sizes.readable },
-	qrContainer: { maxHeight: sizes.qrContainer },
 	halfScreen: { maxHeight: '50vh' },
 	screen: { maxHeight: '100vh' },
 })
