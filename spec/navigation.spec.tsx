@@ -24,10 +24,20 @@ test('navigation highlights the destination before its page loads', async ({
 		function observeFade() {
 			const fades = document.getAnimations().flatMap((animation) => {
 				const effect = animation.effect as KeyframeEffect | null
-				if (!effect?.pseudoElement?.includes('(page-contents)')) return []
+				if (
+					!effect?.target ||
+					!document.querySelector('main')?.contains(effect.target)
+				)
+					return []
 				const opacity = effect.getKeyframes().map((frame) => frame.opacity)
 				if (opacity.some((value) => value === undefined)) return []
-				return [{ opacity, duration: effect.getTiming().duration }]
+				return [
+					{
+						opacity,
+						duration: effect.getTiming().duration,
+						heading: effect.target.querySelector('h1')?.textContent,
+					},
+				]
 			})
 			if (fades.length >= 2) {
 				document.documentElement.dataset.pageFades = JSON.stringify(fades)
@@ -59,8 +69,12 @@ test('navigation highlights the destination before its page loads', async ({
 	)
 	expect(fades).toEqual(
 		expect.arrayContaining([
-			{ opacity: ['1', '0'], duration: expect.any(Number) },
-			{ opacity: ['0', '1'], duration: expect.any(Number) },
+			{
+				opacity: ['1', '0'],
+				duration: expect.any(Number),
+				heading: 'About Me',
+			},
+			{ opacity: ['0', '1'], duration: expect.any(Number), heading: 'Blog' },
 		]),
 	)
 	const [duration] = fades.map((fade: { duration: number }) => fade.duration)
@@ -69,10 +83,8 @@ test('navigation highlights the destination before its page loads', async ({
 	await page.emulateMedia({ reducedMotion: 'reduce' })
 	const reducedDuration = await page.evaluate(
 		() =>
-			getComputedStyle(
-				document.documentElement,
-				'::view-transition-new(page-contents)',
-			).animationDuration,
+			getComputedStyle(document.querySelector('main > div > div')!)
+				.animationDuration,
 	)
 	expect(reducedDuration).toBe('0s')
 	await page.goBack()
