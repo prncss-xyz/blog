@@ -11,10 +11,7 @@ import { spaces } from './tokens/spaces.stylex'
 const heightVariants = stylex.create({
 	full: { height: sizes.full },
 	readable: { height: sizes.readable },
-	toggleButton: { height: sizes.toggleButton },
 	qrContainer: { height: sizes.qrContainer },
-	descriptionMax: { height: sizes.descriptionMaxWidth },
-	containerMax: { height: sizes.containerMaxWidth },
 	halfScreen: { height: '50vh' },
 	screen: { height: '100vh' },
 })
@@ -22,10 +19,7 @@ const heightVariants = stylex.create({
 const widthVariants = stylex.create({
 	full: { width: sizes.full },
 	readable: { width: sizes.readable },
-	toggleButton: { width: sizes.toggleButton },
 	qrContainer: { width: sizes.qrContainer },
-	descriptionMax: { width: sizes.descriptionMaxWidth },
-	containerMax: { width: sizes.containerMaxWidth },
 	halfScreen: { width: '50vw' },
 	screen: { width: '100vw' },
 })
@@ -33,10 +27,7 @@ const widthVariants = stylex.create({
 const minWidthVariants = stylex.create({
 	full: { minWidth: sizes.full },
 	readable: { minWidth: sizes.readable },
-	toggleButton: { minWidth: sizes.toggleButton },
 	qrContainer: { minWidth: sizes.qrContainer },
-	descriptionMax: { minWidth: sizes.descriptionMaxWidth },
-	containerMax: { minWidth: sizes.containerMaxWidth },
 	halfScreen: { minWidth: '50vw' },
 	screen: { minWidth: '100vw' },
 })
@@ -44,10 +35,7 @@ const minWidthVariants = stylex.create({
 const maxWidthVariants = stylex.create({
 	full: { maxWidth: sizes.full },
 	readable: { maxWidth: sizes.readable },
-	toggleButton: { maxWidth: sizes.toggleButton },
 	qrContainer: { maxWidth: sizes.qrContainer },
-	descriptionMax: { maxWidth: sizes.descriptionMaxWidth },
-	containerMax: { maxWidth: sizes.containerMaxWidth },
 	halfScreen: { maxWidth: '50vw' },
 	screen: { maxWidth: '100vw' },
 })
@@ -55,10 +43,7 @@ const maxWidthVariants = stylex.create({
 const minHeightVariants = stylex.create({
 	full: { minHeight: sizes.full },
 	readable: { minHeight: sizes.readable },
-	toggleButton: { minHeight: sizes.toggleButton },
 	qrContainer: { minHeight: sizes.qrContainer },
-	descriptionMax: { minHeight: sizes.descriptionMaxWidth },
-	containerMax: { minHeight: sizes.containerMaxWidth },
 	halfScreen: { minHeight: '50vh' },
 	screen: { minHeight: '100vh' },
 })
@@ -66,10 +51,7 @@ const minHeightVariants = stylex.create({
 const maxHeightVariants = stylex.create({
 	full: { maxHeight: sizes.full },
 	readable: { maxHeight: sizes.readable },
-	toggleButton: { maxHeight: sizes.toggleButton },
 	qrContainer: { maxHeight: sizes.qrContainer },
-	descriptionMax: { maxHeight: sizes.descriptionMaxWidth },
-	containerMax: { maxHeight: sizes.containerMaxWidth },
 	halfScreen: { maxHeight: '50vh' },
 	screen: { maxHeight: '100vh' },
 })
