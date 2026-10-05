@@ -31,7 +31,7 @@ function IconLink({
 			type={type}
 			align='baseline'
 			justify='center'
-			color='muted'
+			color='text'
 		>
 			<Icon aria-hidden='true' focusable='false' size={16} />
 		</Row>
@@ -40,7 +40,7 @@ function IconLink({
 
 export function LinkIcons() {
 	return (
-		<Row gap={4} color='accent'>
+		<Row gap={4}>
 			{links.map((link) => (
 				<IconLink
 					key={link.type}
