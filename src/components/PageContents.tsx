@@ -1,7 +1,7 @@
 'use client'
 
 import * as stylex from '@stylexjs/stylex'
-import { Component, createRef, type ReactNode } from 'react'
+import { type ReactNode, useLayoutEffect, useRef } from 'react'
 import { useRouter } from 'waku'
 
 import { Col } from '@/layouts/Box'
@@ -27,76 +27,80 @@ const styles = stylex.create({
 type ContentProps = { path: string; children: ReactNode }
 
 // Waku's route children resolve through context, so retaining the ReactNode
-// would render the new page twice. Snapshot the DOM before React mutates it.
-class ContentCrossfade extends Component<ContentProps> {
-	private layers = createRef<HTMLDivElement>()
-	private content = createRef<HTMLDivElement>()
-	private outgoing: HTMLElement | null = null
-	private animations: Animation[] = []
+// would render the new page twice. Keep a DOM copy of the committed page.
+function ContentCrossfade({ path, children }: ContentProps) {
+	const layersRef = useRef<HTMLDivElement>(null)
+	const contentRef = useRef<HTMLDivElement>(null)
+	const previousPage = useRef<{ path: string; snapshot: HTMLElement } | null>(
+		null,
+	)
 
-	getSnapshotBeforeUpdate(previous: ContentProps) {
-		return previous.path !== this.props.path
-			? (this.content.current?.cloneNode(true) ?? null)
-			: null
-	}
-
-	componentDidUpdate(
-		_previous: ContentProps,
-		_state: unknown,
-		snapshot: Node | null,
-	) {
-		if (!(snapshot instanceof HTMLElement)) return
-		this.clearAnimation()
-		const content = this.content.current
-		const layers = this.layers.current
+	useLayoutEffect(() => {
+		const content = contentRef.current
+		const layers = layersRef.current
 		if (!content || !layers) return
+
+		const previous = previousPage.current
+		function capture() {
+			if (!content) return
+			previousPage.current = {
+				path,
+				snapshot: content.cloneNode(true) as HTMLElement,
+			}
+		}
+		capture()
+		// Keep the copy current when descendants update without a route change.
+		const observer = new MutationObserver(capture)
+		observer.observe(content, {
+			childList: true,
+			subtree: true,
+			characterData: true,
+			attributes: true,
+		})
+
+		let outgoing: HTMLElement | null = null
+		let animations: Animation[] = []
+		function clearAnimation() {
+			animations.forEach((animation) => animation.cancel())
+			animations = []
+			outgoing?.remove()
+			outgoing = null
+		}
 
 		const duration =
 			Number.parseFloat(getComputedStyle(content).animationDuration) * 1000
-		if (!duration) return
+		if (previous && previous.path !== path && duration > 0) {
+			outgoing = previous.snapshot
+			const { className } = stylex.props(styles.outgoing)
+			if (className) outgoing.classList.add(...className.split(' '))
+			outgoing.inert = true
+			outgoing.setAttribute('aria-hidden', 'true')
+			layers.append(outgoing)
 
-		const { className } = stylex.props(styles.outgoing)
-		if (className) snapshot.classList.add(...className.split(' '))
-		snapshot.inert = true
-		snapshot.setAttribute('aria-hidden', 'true')
-		layers.append(snapshot)
-		this.outgoing = snapshot
+			const options = { duration, easing: 'linear', fill: 'both' as const }
+			animations = [
+				outgoing.animate({ opacity: [1, 0] }, options),
+				content.animate({ opacity: [0, 1] }, options),
+			]
+			void Promise.all(animations.map((animation) => animation.finished)).then(
+				clearAnimation,
+				() => {},
+			)
+		}
 
-		const options = { duration, easing: 'linear', fill: 'both' as const }
-		this.animations = [
-			snapshot.animate({ opacity: [1, 0] }, options),
-			content.animate({ opacity: [0, 1] }, options),
-		]
-		void Promise.all(
-			this.animations.map((animation) => animation.finished),
-		).then(
-			() => {
-				if (this.outgoing === snapshot) this.clearAnimation()
-			},
-			() => {},
-		)
-	}
+		return () => {
+			observer.disconnect()
+			clearAnimation()
+		}
+	}, [path])
 
-	componentWillUnmount() {
-		this.clearAnimation()
-	}
-
-	private clearAnimation() {
-		this.animations.forEach((animation) => animation.cancel())
-		this.animations = []
-		this.outgoing?.remove()
-		this.outgoing = null
-	}
-
-	render() {
-		return (
-			<Col ref={this.layers} grow={1} style={styles.layers}>
-				<Col ref={this.content} grow={1} style={styles.content}>
-					{this.props.children}
-				</Col>
+	return (
+		<Col ref={layersRef} grow={1} style={styles.layers}>
+			<Col ref={contentRef} grow={1} style={styles.content}>
+				{children}
 			</Col>
-		)
-	}
+		</Col>
+	)
 }
 
 export function PageContents({ children }: { children: ReactNode }) {
