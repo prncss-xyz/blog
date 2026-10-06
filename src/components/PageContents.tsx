@@ -24,8 +24,6 @@ const styles = stylex.create({
 	},
 })
 
-type ContentProps = { path: string; children: ReactNode }
-
 function startCrossfade(
 	layers: HTMLElement,
 	content: HTMLElement,
@@ -56,12 +54,13 @@ function startCrossfade(
 
 // Waku's route children resolve through context, so retaining the ReactNode
 // would render the new page twice. Keep a DOM copy of the committed page.
-function ContentCrossfade({ path, children }: ContentProps) {
+export function PageContents({ children }: { children: ReactNode }) {
 	const layersRef = useRef<HTMLDivElement>(null)
 	const contentRef = useRef<HTMLDivElement>(null)
 	const previousPage = useRef<{ path: string; snapshot: HTMLElement } | null>(
 		null,
 	)
+	const { path } = useRouter()
 
 	useLayoutEffect(() => {
 		const content = contentRef.current
@@ -104,28 +103,6 @@ function ContentCrossfade({ path, children }: ContentProps) {
 			<Col ref={contentRef} grow={1} style={styles.content}>
 				{children}
 			</Col>
-		</Col>
-	)
-}
-
-export function PageContents({
-	children,
-	style,
-}: {
-	children: ReactNode
-	style?: stylex.StyleXStyles
-}) {
-	const { path } = useRouter()
-	return (
-		<Col
-			bg='translucent'
-			p={5}
-			minW='readable'
-			grow={1}
-			as='main'
-			style={style}
-		>
-			<ContentCrossfade path={path}>{children}</ContentCrossfade>
 		</Col>
 	)
 }

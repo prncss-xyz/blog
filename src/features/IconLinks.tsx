@@ -35,7 +35,7 @@ function IconLink({
 			justify='center'
 			color='text'
 		>
-			<Icon aria-hidden='true' focusable='false' size={16} />
+			<Icon aria-hidden='true' focusable='false' size={24} />
 		</Row>
 	)
 }

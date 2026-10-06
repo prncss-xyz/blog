@@ -12,12 +12,21 @@ import { DevStyleXInject } from '@/layouts/DevStyleXInject'
 import { borderRadii } from '@/layouts/tokens/borderRadii.stylex'
 import { colors } from '@/layouts/tokens/colors.stylex'
 import { sizeBreakpoints } from '@/layouts/tokens/sizeBreakpoints.stylex'
+import { sizes } from '@/layouts/tokens/sizes.stylex'
+import { spaces } from '@/layouts/tokens/spaces.stylex'
 import { basePath } from '@/meta'
 const { title, description } = settings
 
 const styles = stylex.create({
 	header: {
-		maxWidth: '45rem',
+		paddingLeft: {
+			default: '0px',
+			[sizeBreakpoints.readableOrLess]: spaces[5],
+		},
+		paddingRight: {
+			default: '0px',
+			[sizeBreakpoints.readableOrLess]: spaces[5],
+		},
 	},
 	navLink: {
 		color: {
@@ -26,6 +35,8 @@ const styles = stylex.create({
 		},
 	},
 	panel: {
+		width: sizes.full,
+		maxWidth: sizes.readable,
 		borderRadius: {
 			default: borderRadii[1],
 			[sizeBreakpoints.readableOrLess]: '0px',
@@ -63,7 +74,10 @@ export default async function RootLayout({
 				as='header'
 				style={styles.header}
 				pb={4}
-				w='full'
+				gap={5}
+				maxW='full'
+				w='readable'
+				wrap
 				align='center'
 				justify='between'
 				borderColor='accent'
@@ -71,11 +85,17 @@ export default async function RootLayout({
 				border='bottom'
 			>
 				<Box fontSize={5}>{title}</Box>
-				<Row gap={5}>
+				<Row gap={5} wrap>
 					{allPages.map(({ slug, title }) => {
 						const to = '/' + (slug === 'about' ? '' : slug)
 						return (
-							<Box as={NavLink} key={to} to={to} style={styles.navLink}>
+							<Box
+								as={NavLink}
+								key={to}
+								to={to}
+								style={styles.navLink}
+								fontSize={4}
+							>
 								{title}
 							</Box>
 						)
@@ -90,16 +110,17 @@ export default async function RootLayout({
 				grow={1}
 				pt={8}
 				pb={6}
-				gap={8}
+				gap={7}
 				align='center'
 				justify='between'
 			>
-				<PageContents style={styles.panel}>{children}</PageContents>
+				<Col bg='translucent' p={5} minW='readable' grow={1} as='main'>
+					<PageContents>{children}</PageContents>
+				</Col>
 				<Row
 					style={styles.panel}
-					minW='readable'
 					justify='center'
-					py={3}
+					py={4}
 					color='accent'
 					bg='translucent'
 					gap={4}

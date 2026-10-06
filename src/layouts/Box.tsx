@@ -62,6 +62,11 @@ const flexVariants = stylex.create({
 	},
 })
 
+const wrapVariants = stylex.create({
+	wrap: { flexWrap: 'wrap' },
+	nowrap: { flexWrap: 'nowrap' },
+})
+
 const justifyVariants = stylex.create({
 	around: {
 		justifyContent: 'space-around',
@@ -321,6 +326,7 @@ type BoxBaseProps<E extends React.ElementType = React.ElementType> = {
 	align?: keyof typeof alignVariants
 	as?: E
 	flex?: keyof typeof flexVariants
+	wrap?: boolean
 	fontFamily?: keyof typeof fontFamilyVariants
 	fontSize?: keyof typeof fontSizeVariants
 	fontWeight?: keyof typeof fontWeightVariants
@@ -365,6 +371,7 @@ export function Box<E extends React.ElementType = typeof defaultElement>({
 	align,
 	as,
 	flex,
+	wrap,
 	fontFamily,
 	fontSize,
 	fontWeight,
@@ -401,6 +408,7 @@ export function Box<E extends React.ElementType = typeof defaultElement>({
 	const { ...elementProps } = rest as typeof rest
 	const styleProps = stylex.props([
 		flex && flexVariants[flex],
+		wrap != null && wrapVariants[wrap ? 'wrap' : 'nowrap'],
 		h && heightVariants[h],
 		maxH && maxHeightVariants[maxH],
 		maxW && maxWidthVariants[maxW],
