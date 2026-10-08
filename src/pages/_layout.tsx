@@ -9,23 +9,38 @@ import { PageMeta } from '@/components/PageMeta'
 import { LinkIcons } from '@/features/IconLinks'
 import { Box, Col, Row } from '@/layouts/Box'
 import { DevStyleXInject } from '@/layouts/DevStyleXInject'
+import { ScrollbarMetrics } from '@/layouts/ScrollbarMetrics'
 import { borderRadii } from '@/layouts/tokens/borderRadii.stylex'
 import { colors } from '@/layouts/tokens/colors.stylex'
+import { scrollbars } from '@/layouts/tokens/scrollbars.stylex'
 import { sizeBreakpoints } from '@/layouts/tokens/sizeBreakpoints.stylex'
-import { sizes } from '@/layouts/tokens/sizes.stylex'
 import { spaces } from '@/layouts/tokens/spaces.stylex'
 import { basePath } from '@/meta'
 const { title, description } = settings
 
 const styles = stylex.create({
 	header: {
+		marginRight: {
+			default: `max(0px, calc(${scrollbars.width} - (100vw - 100%)))`,
+			[sizeBreakpoints.readableOrLess]: '0px',
+		},
 		paddingLeft: {
 			default: '0px',
-			[sizeBreakpoints.readableOrLess]: spaces[5],
+			[sizeBreakpoints.readableOrLess]: `calc(${spaces[5]} + max(0px, ${scrollbars.width} - (100vw - 100%)))`,
 		},
 		paddingRight: {
 			default: '0px',
-			[sizeBreakpoints.readableOrLess]: spaces[5],
+			[sizeBreakpoints.readableOrLess]: `calc(${spaces[5]} + max(0px, ${scrollbars.width} - (100vw - 100%)))`,
+		},
+	},
+	contentPanel: {
+		marginRight: {
+			default: `max(0px, calc(${scrollbars.width} - (100vw - 100%)))`,
+			[sizeBreakpoints.readableOrLess]: '0px',
+		},
+		paddingRight: {
+			default: spaces[5],
+			[sizeBreakpoints.readableOrLess]: `calc(${spaces[5]} + max(0px, ${scrollbars.width} - (100vw - 100%)))`,
 		},
 	},
 	navLink: {
@@ -35,8 +50,14 @@ const styles = stylex.create({
 		},
 	},
 	panel: {
-		width: sizes.full,
-		maxWidth: sizes.readable,
+		marginRight: {
+			default: `max(0px, calc(${scrollbars.width} - (100vw - 100%)))`,
+			[sizeBreakpoints.readableOrLess]: '0px',
+		},
+		paddingRight: {
+			default: '0px',
+			[sizeBreakpoints.readableOrLess]: `max(0px, calc(${scrollbars.width} - (100vw - 100%)))`,
+		},
 		borderRadius: {
 			default: borderRadii[1],
 			[sizeBreakpoints.readableOrLess]: '0px',
@@ -70,6 +91,7 @@ export default async function RootLayout({
 				href={basePath + 'images/favicon.svg'}
 			/>
 			<DevStyleXInject />
+			<ScrollbarMetrics />
 			<Row
 				as='header'
 				style={styles.header}
@@ -114,10 +136,20 @@ export default async function RootLayout({
 				align='center'
 				justify='between'
 			>
-				<Col bg='translucent' p={5} minW='readable' grow={1} as='main'>
+				<Col
+					style={styles.contentPanel}
+					bg='translucent'
+					p={5}
+					maxW='full'
+					w='readable'
+					grow={1}
+					as='main'
+				>
 					<PageContents>{children}</PageContents>
 				</Col>
 				<Row
+					maxW='full'
+					w='readable'
 					style={styles.panel}
 					justify='center'
 					py={4}

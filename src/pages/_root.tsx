@@ -10,7 +10,6 @@ type RootElementProps = { children: ReactNode }
 
 const styles = stylex.create({
 	root: {
-		scrollbarGutter: 'stable',
 		backgroundColor: colors.background,
 		color: colors.text,
 	},
