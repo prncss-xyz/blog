@@ -7,8 +7,19 @@ description: About Me
 
 I'm a developer.
 
-- my stack
-- my tools
+## My Stack
 
-- projects
-- talks
+- this
+- that
+
+## My Projects
+
+### Optics
+
+See see
+
+## Talks
+
+### Bluh
+
+Blip bloop blap
