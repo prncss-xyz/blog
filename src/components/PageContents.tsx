@@ -1,108 +1,28 @@
 'use client'
 
-import * as stylex from '@stylexjs/stylex'
-import { type ReactNode, useLayoutEffect, useRef } from 'react'
-import { useRouter } from 'waku'
+import { type ReactNode, useSyncExternalStore, ViewTransition } from 'react'
 
 import { Col } from '@/layouts/Box'
-import { animationDurations } from '@/layouts/tokens/animationDurations.stylex'
 
-const styles = stylex.create({
-	layers: { position: 'relative', isolation: 'isolate' },
-	content: {
-		animationDuration: animationDurations.normal,
-		// StyleX's validator and types predate plus-lighter; keep its runtime value.
-		// oxlint-disable-next-line stylex/valid-styles
-		mixBlendMode: 'plus-lighter' as 'normal',
-	},
-	outgoing: {
-		position: 'absolute',
-		top: 0,
-		left: 0,
-		width: '100%',
-		pointerEvents: 'none',
-	},
-})
-
-function startCrossfade(
-	layers: HTMLElement,
-	content: HTMLElement,
-	outgoing: HTMLElement,
-	duration: number,
-) {
-	const { className } = stylex.props(styles.outgoing)
-	if (className) outgoing.classList.add(...className.split(' '))
-	outgoing.inert = true
-	outgoing.setAttribute('aria-hidden', 'true')
-	layers.append(outgoing)
-
-	const options = { duration, easing: 'linear', fill: 'both' as const }
-	const animations = [
-		outgoing.animate({ opacity: [1, 0] }, options),
-		content.animate({ opacity: [0, 1] }, options),
-	]
-	function cleanup() {
-		animations.forEach((animation) => animation.cancel())
-		outgoing.remove()
-	}
-	void Promise.all(animations.map((animation) => animation.finished)).then(
-		cleanup,
-		() => {},
-	)
-	return cleanup
+function subscribeToReducedMotion(onChange: () => void) {
+	const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+	media.addEventListener('change', onChange)
+	return () => media.removeEventListener('change', onChange)
 }
 
-// Waku's route children resolve through context, so retaining the ReactNode
-// would render the new page twice. Keep a DOM copy of the committed page.
+function getReducedMotion() {
+	return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
 export function PageContents({ children }: { children: ReactNode }) {
-	const layersRef = useRef<HTMLDivElement>(null)
-	const contentRef = useRef<HTMLDivElement>(null)
-	const previousPage = useRef<{ path: string; snapshot: HTMLElement } | null>(
-		null,
+	const reducedMotion = useSyncExternalStore(
+		subscribeToReducedMotion,
+		getReducedMotion,
+		() => true,
 	)
-	const { path } = useRouter()
-
-	useLayoutEffect(() => {
-		const content = contentRef.current
-		const layers = layersRef.current
-		if (!content || !layers) return
-
-		const previous = previousPage.current
-		function capture() {
-			if (!content) return
-			previousPage.current = {
-				path,
-				snapshot: content.cloneNode(true) as HTMLElement,
-			}
-		}
-		capture()
-		// Keep the copy current when descendants update without a route change.
-		const observer = new MutationObserver(capture)
-		observer.observe(content, {
-			childList: true,
-			subtree: true,
-			characterData: true,
-			attributes: true,
-		})
-
-		const duration =
-			Number.parseFloat(getComputedStyle(content).animationDuration) * 1000
-		const clearAnimation =
-			previous && previous.path !== path && duration > 0
-				? startCrossfade(layers, content, previous.snapshot, duration)
-				: undefined
-
-		return () => {
-			observer.disconnect()
-			clearAnimation?.()
-		}
-	}, [path])
-
 	return (
-		<Col ref={layersRef} grow={1} style={styles.layers}>
-			<Col ref={contentRef} grow={1} style={styles.content}>
-				{children}
-			</Col>
-		</Col>
+		<ViewTransition default={reducedMotion ? 'none' : 'auto'}>
+			<Col grow={1}>{children}</Col>
+		</ViewTransition>
 	)
 }
