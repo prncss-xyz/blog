@@ -175,19 +175,19 @@ function rehypeSections() {
 		}
 		const children: Node[] = [section]
 		let index = 0
-		let hasH2 = false
 		for (const child of tree.children ?? []) {
-			if (child.type === 'element' && child.tagName === 'h2') {
-				if (hasH2) {
-					section = {
-						type: 'element',
-						tagName: 'md-section',
-						properties: { index: ++index },
-						children: [],
-					}
-					children.push(section)
+			if (
+				child.type === 'element' &&
+				child.tagName === 'h2' &&
+				section.children!.length > 0
+			) {
+				section = {
+					type: 'element',
+					tagName: 'md-section',
+					properties: { index: ++index },
+					children: [],
 				}
-				hasH2 = true
+				children.push(section)
 			}
 			section.children!.push(child)
 		}

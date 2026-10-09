@@ -18,7 +18,7 @@ describe('createMD sections', () => {
 		return createElement('section', { 'data-index': index }, children)
 	}
 
-	test('starts the first section at the document beginning and splits at the second H2', async () => {
+	test('wraps content before the first H2 in its own section', async () => {
 		const MD = createMD(
 			{
 				h2: ({ children }) =>
@@ -33,7 +33,7 @@ describe('createMD sections', () => {
 			}),
 		)
 		expect(html.replaceAll('\n', '')).toBe(
-			'<section data-index="0"><h1>Title</h1><p>Intro</p><h2 class="heading">First</h2><p>Body</p><h3>Detail</h3><ul data-depth="0"><li>item</li></ul></section><section data-index="1"><h2 class="heading">Second</h2></section><section data-index="2"><h2 class="heading">Third</h2><p>End</p></section>',
+			'<section data-index="0"><h1>Title</h1><p>Intro</p></section><section data-index="1"><h2 class="heading">First</h2><p>Body</p><h3>Detail</h3><ul data-depth="0"><li>item</li></ul></section><section data-index="2"><h2 class="heading">Second</h2></section><section data-index="3"><h2 class="heading">Third</h2><p>End</p></section>',
 		)
 	})
 
