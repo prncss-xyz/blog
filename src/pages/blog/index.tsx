@@ -17,7 +17,7 @@ const sortedBlogs = allBlogs.toSorted(
 
 export default async function PostsIndex() {
 	return (
-		<>
+		<Col p={5} grow={1}>
 			<PageMeta {...page} />
 			<MD>{page.content}</MD>
 			{sortedBlogs.length ? (
@@ -36,7 +36,7 @@ export default async function PostsIndex() {
 			) : (
 				globalMessages.comingSoon
 			)}
-		</>
+		</Col>
 	)
 }
 

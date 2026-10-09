@@ -2,6 +2,7 @@ import * as stylex from '@stylexjs/stylex'
 import type { ReactNode } from 'react'
 
 import { PageMeta } from '@/components/PageMeta'
+import { Box } from '@/layouts/Box'
 import { markdownElements } from '@/layouts/MD'
 import { createMD } from '@/layouts/MD/createMD'
 import { getPage } from '@/utils/getPage'
@@ -14,9 +15,9 @@ const styles = stylex.create({
 
 function Section({ children, index }: { children?: ReactNode; index: number }) {
 	return (
-		<section {...stylex.props(index % 2 === 0 && styles.lighterSection)}>
+		<Box as='section' p={5} style={index % 2 === 0 && styles.lighterSection}>
 			{children}
-		</section>
+		</Box>
 	)
 }
 

@@ -110,7 +110,7 @@ export default async function RootLayout({
 				align='center'
 				justify='between'
 			>
-				<Col bg='translucent' p={5} maxW='full' w='readable' grow={1} as='main'>
+				<Col bg='translucent' maxW='full' w='readable' grow={1} as='main'>
 					<PageContents>{children}</PageContents>
 				</Col>
 				<Row
