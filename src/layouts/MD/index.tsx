@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { Fragment } from 'react'
 
 import { Blockquote } from '../elements/Blockquote'
 import { H1, H2, H3 } from '../elements/Heading'
@@ -9,7 +9,7 @@ import { createMD } from './createMD'
 import { P } from './P'
 import { Small, Sub, Sup } from './Small'
 
-const elems = {
+export const markdownElements = {
 	a: A,
 	blockquote: Blockquote,
 	h1: H1,
@@ -25,10 +25,6 @@ const elems = {
 	img: Img,
 }
 
-export const MD = createMD(elems)
+export const MD = createMD(markdownElements)
 
-function Frag({ children }: { children?: ReactNode }) {
-	return <>{children}</>
-}
-
-export const MDFrag = createMD({ ...elems, frag: Frag })
+export const MDFrag = createMD({ ...markdownElements, frag: Fragment })

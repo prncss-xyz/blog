@@ -1,6 +1,26 @@
+import * as stylex from '@stylexjs/stylex'
+import type { ReactNode } from 'react'
+
 import { PageMeta } from '@/components/PageMeta'
-import { MD } from '@/layouts/MD'
+import { markdownElements } from '@/layouts/MD'
+import { createMD } from '@/layouts/MD/createMD'
 import { getPage } from '@/utils/getPage'
+
+const styles = stylex.create({
+	lighterSection: {
+		backgroundColor: 'rgb(255 255 255 / 8%)',
+	},
+})
+
+function Section({ children, index }: { children?: ReactNode; index: number }) {
+	return (
+		<section {...stylex.props(index % 2 === 0 && styles.lighterSection)}>
+			{children}
+		</section>
+	)
+}
+
+const MD = createMD(markdownElements, Section)
 
 const page = getPage('about')
 

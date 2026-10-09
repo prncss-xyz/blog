@@ -1,6 +1,7 @@
 import { Buffer } from 'node:buffer'
 
 import { toString as hastToString } from 'hast-util-to-string'
+import type { ComponentType, ReactNode } from 'react'
 import * as prod from 'react/jsx-runtime'
 import rehypeMermaid from 'rehype-mermaid'
 import rehypePrettyCode, {
@@ -156,14 +157,57 @@ async function createParser(markdown: string) {
 	return parser.use(rehypePrettyCode, prettyCodeOptions)
 }
 
-async function getParser(components: Partial<Components>, markdown: string) {
-	const parser = (await createParser(markdown)).use(rehypeReact, {
+type SectionProps = { children?: ReactNode; index: number }
+
+function rehypeSections() {
+	type Node = {
+		type: string
+		tagName?: string
+		properties?: Record<string, unknown>
+		children?: Node[]
+	}
+	return (tree: Node) => {
+		let section: Node = {
+			type: 'element',
+			tagName: 'md-section',
+			properties: { index: 0 },
+			children: [],
+		}
+		const children: Node[] = [section]
+		let index = 0
+		let hasH2 = false
+		for (const child of tree.children ?? []) {
+			if (child.type === 'element' && child.tagName === 'h2') {
+				if (hasH2) {
+					section = {
+						type: 'element',
+						tagName: 'md-section',
+						properties: { index: ++index },
+						children: [],
+					}
+					children.push(section)
+				}
+				hasH2 = true
+			}
+			section.children!.push(child)
+		}
+		tree.children = children
+	}
+}
+
+async function getParser(
+	components: Partial<Components>,
+	markdown: string,
+	Section?: ComponentType<SectionProps>,
+) {
+	const parser = await createParser(markdown)
+	if (Section) parser.use(rehypeSections)
+	return parser.use(rehypeReact, {
 		Fragment: prod.Fragment,
-		components,
+		components: { ...components, ...(Section && { 'md-section': Section }) },
 		jsx: prod.jsx,
 		jsxs: prod.jsxs,
 	})
-	return parser
 }
 
 export async function mdToHtml(md: string) {
@@ -171,9 +215,12 @@ export async function mdToHtml(md: string) {
 	return String(result)
 }
 
-export function createMD(defaultComponents: Partial<Components>) {
+export function createMD(
+	defaultComponents: Partial<Components>,
+	Section?: ComponentType<SectionProps>,
+) {
 	return async function MD({ children }: { children: string }) {
-		const parser = await getParser(defaultComponents, children)
+		const parser = await getParser(defaultComponents, children, Section)
 		const { result } = await parser.process(children)
 		return result
 	}
