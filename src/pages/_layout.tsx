@@ -9,8 +9,8 @@ import { LinkIcons } from '@/features/IconLinks'
 import { Box, Col, Row } from '@/layouts/Box'
 import { DevStyleXInject } from '@/layouts/DevStyleXInject'
 import { borderRadii } from '@/layouts/tokens/borderRadii.stylex'
+import { breakpoints } from '@/layouts/tokens/breakpoints.stylex'
 import { colors } from '@/layouts/tokens/colors.stylex'
-import { sizeBreakpoints } from '@/layouts/tokens/sizeBreakpoints.stylex'
 import { spaces } from '@/layouts/tokens/spaces.stylex'
 import { basePath } from '@/meta'
 const { title, description } = settings
@@ -18,12 +18,12 @@ const { title, description } = settings
 const styles = stylex.create({
 	header: {
 		paddingLeft: {
-			default: '0px',
-			[sizeBreakpoints.readableOrLess]: spaces[5],
+			default: spaces[5],
+			[breakpoints.md]: '0px',
 		},
 		paddingRight: {
-			default: '0px',
-			[sizeBreakpoints.readableOrLess]: spaces[5],
+			default: spaces[5],
+			[breakpoints.md]: '0px',
 		},
 	},
 	navLink: {
@@ -34,8 +34,8 @@ const styles = stylex.create({
 	},
 	panel: {
 		borderRadius: {
-			default: borderRadii[1],
-			[sizeBreakpoints.readableOrLess]: '0px',
+			default: '0px',
+			[breakpoints.md]: borderRadii[1],
 		},
 	},
 	pageBackground: (imageUrl: string) => ({

@@ -7,6 +7,7 @@ import { ViteWebfontDownload } from 'vite-plugin-webfont-dl'
 import { defineConfig } from 'vite-plus'
 
 import { viteWebfontDownloadConfig } from './fontConstants'
+import fmt from './oxfmt.config'
 import lint from './oxlint.config'
 import {
 	stylexLightningCssOptions,
@@ -26,18 +27,7 @@ export default defineConfig({
 				].some((pkg) => id === pkg || id.startsWith(`${pkg}/`)),
 		},
 	},
-	fmt: {
-		arrowParens: 'always',
-		ignorePatterns: ['.*', 'src/pages.gen.ts'],
-		jsxSingleQuote: true,
-		printWidth: 80,
-		semi: false,
-		singleQuote: true,
-		sortImports: true,
-		sortPackageJson: true,
-		trailingComma: 'all',
-		useTabs: true,
-	},
+	fmt,
 	lint,
 	plugins: [
 		// the StyleX Vite plugin (@stylexjs/unplugin), keeps file watchers and cause the Vite dev server to keep alive when tests have completed
