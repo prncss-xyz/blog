@@ -1,11 +1,11 @@
 {
-	"name": "timer-demo",
+	"name": "blog",
 	"version": "0.0.0",
 	"private": true,
-	"homepage": "https://prncss-xyz.github.io/timer-demo/",
+	"homepage": "https://prncss-xyz.github.io/blog/",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/prncss-xyz/timer-demo.git"
+		"url": "https://github.com/prncss-xyz/blog.git"
 	},
 	"type": "module",
 	"scripts": {

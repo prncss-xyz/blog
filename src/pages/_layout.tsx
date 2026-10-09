@@ -16,6 +16,12 @@ import { basePath } from '@/meta'
 const { title, description } = settings
 
 const styles = stylex.create({
+	root: {
+		paddingTop: {
+			default: spaces[4],
+			[breakpoints.md]: spaces[8],
+		},
+	},
 	header: {
 		paddingLeft: {
 			default: spaces[5],
@@ -53,7 +59,7 @@ export default async function RootLayout({
 }) {
 	return (
 		<Col
-			pt={8}
+			style={styles.root}
 			fontFamily='base'
 			minH='screen'
 			align='center'
